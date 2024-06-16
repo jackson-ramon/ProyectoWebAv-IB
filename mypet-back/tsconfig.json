@@ -16,6 +16,12 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
-  }
+    "noFallthroughCasesInSwitch": false,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "**/*",
+    "!src/auth/guard/jwt-auth.guard.ts",
+    "!1718503154558-migration7.ts"
+  ]
 }
