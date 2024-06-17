@@ -1,9 +1,8 @@
 import { Body, Controller, Get, Post, UseGuards, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
-import { Request } from 'express';
 import { RegisterDto } from './dto/register.dto';
-import { AuthGuard } from './guard/auth.guard'; // Update the import path
+import { AuthGuard } from './guard/auth.guard';
 import { ResetPasswordDto } from 'src/users/dto/reset-password.dto';
 
 @Controller('auth')
@@ -16,7 +15,6 @@ export class AuthController {
   }   
 
   @Post('login')
-  @UseGuards(AuthGuard)
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }

@@ -36,7 +36,7 @@ export class ProductsController {
     const id = decoded['id'];
     const user = await this.usersService.findOneById(id);
 
-    console.log('ProductsController - User:', user.id);  // Añadir log para depuración
+    console.log('ProductsController - User:', user.id);
     this.logger.debug(`User ID: ${user.id}`);
     const { name, price: productPrice } = createProductDto;
     const numberPrice = Number(productPrice);
