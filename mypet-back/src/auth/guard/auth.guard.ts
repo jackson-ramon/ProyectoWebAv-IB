@@ -21,6 +21,8 @@ export class AuthGuard implements CanActivate {
         { secret: process.env.JWT_SECRET }
       );
 
+      payload.isAuthorized = true;
+
       request.user = payload;
     } catch {
       throw new UnauthorizedException();
