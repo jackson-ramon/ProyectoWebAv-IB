@@ -22,16 +22,6 @@ export default function LoginPage () {
     finishLoading()
   }
 
-  // const login = (formData: any) => {
-  //   startLoading()
-  //   if (formData.email === 'jackson' && formData.password === '1234') {
-  //     // console.log('Iniciando sesión')
-  //   } else {
-  //     console.log('No se pudo iniciar sesión')
-  //   }
-  //   finishLoading();
-  // }
-
   return (
     <>
       <div className='min-h-screen flex flex-col items-center justify-center'>
