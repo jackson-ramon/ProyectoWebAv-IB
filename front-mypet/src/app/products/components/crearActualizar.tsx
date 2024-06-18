@@ -99,7 +99,7 @@ const CrearActualizar: React.FC<CrearActualizarProps> = ({ open, setOpen, actual
                 }
             });
             console.log(response.data);
-            setConsult(true);
+            // setConsult(true);
 
             setFormValue({
                 name: '',
@@ -111,7 +111,45 @@ const CrearActualizar: React.FC<CrearActualizarProps> = ({ open, setOpen, actual
         } catch (error) {
             console.error(error);
         }
+        setConsult(true);
 
+    };
+
+    const handleUpdate = async () => {
+        if (!formRef.current.check()) {
+            // console.error('Form Error');
+            return;
+        }
+        console.log(formValue, 'Form Value');
+        console.log(imageFile, 'Image File');
+
+        try {
+            const formData = new FormData();
+            formData.append('name', formValue.name);
+            formData.append('price', formValue.price);
+            if (imageFile) {
+              formData.append('image', imageFile);
+            }
+
+            const response = await axios.put(`http://localhost:3001/products/${dataActual.id}`, formData, {
+                headers: {
+                    Authorization: `Bearer ${getCookie('auth_cookie')}`
+                }
+            });
+            console.log(response.data);
+            // setConsult(true);
+
+            setFormValue({
+                name: '',
+                price: '',
+            });
+            setImageFile(null);
+            setPreviewUrl(null);
+            close();
+        } catch (error) {
+            console.error(error);
+        }
+        setConsult(true);
     };
 
     return (
@@ -150,7 +188,7 @@ const CrearActualizar: React.FC<CrearActualizarProps> = ({ open, setOpen, actual
                                         <div className="flex flex-col items-center">
                                             {previewUrl ? (
                                                 <img
-                                                    src={actualizar ? dataActual.imageUrl : previewUrl}
+                                                    src={dataActual.imageUrl || previewUrl}
                                                     alt="Preview"
                                                     className="w-12 h-34 object-cover rounded mb-2"
                                                 />
@@ -165,7 +203,7 @@ const CrearActualizar: React.FC<CrearActualizarProps> = ({ open, setOpen, actual
                         </Row>
                     </Grid>
                     <Form.Group className='d-flex justify-content-end'>
-                        <Button appearance="primary" onClick={handleSubmit}>
+                        <Button appearance="primary" onClick={actualizar ? handleUpdate : handleSubmit}>
                             Guardar
                         </Button>
                     </Form.Group>

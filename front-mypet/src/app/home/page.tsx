@@ -20,6 +20,8 @@ import 'rsuite/dist/rsuite.min.css';
 import { Panel } from 'rsuite';
 import StockProductos from '../products/page';
 import ChatPage from '../chat/page';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faShieldDog } from '@fortawesome/free-solid-svg-icons'
 
 const headerStyles = {
   padding: 18,
@@ -74,8 +76,9 @@ export default function HomePage () {
           collapsible
         >
           <Sidenav.Header>
-            <div style={headerStyles}>
-              <span style={{ marginLeft: 12 }}>Bienvenido Jackson</span>
+            <div style={headerStyles} className='align-middle'>
+              <FontAwesomeIcon icon={faShieldDog} fontSize={30} />
+              {expand ? <span style={{ marginLeft: 12 }}>My Pet</span> : ""}
             </div>
           </Sidenav.Header>
           <Sidenav 

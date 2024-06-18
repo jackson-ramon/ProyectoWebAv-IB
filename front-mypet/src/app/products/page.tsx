@@ -28,6 +28,7 @@ export default function StockProductos() {
     const [confirmation, setConfirmation] = useState(false);
     const [data, setData] = useState([] as Product[]);
     const [consult, setConsult] = useState(true);
+    const [idDelete, setIdDelete] = useState(0);
     
     const getProducts = async () => {
         try {
@@ -64,34 +65,40 @@ export default function StockProductos() {
     };
 
     const handleUpdate = (product: Product) => {
-        // console.log(product);
+        console.log(product);
         setActualizar(true);
         setOpenModal(true);
         setDataActualizar(product);
     };
+
+    useEffect(() => {
+        if (remove) {
+            removeProduct(idDelete);
+        }
+    }, [remove])
+    
     
     const handleDelete = (id: number) => {
+        setIdDelete(id);
         setConfirmation(true);
-        if (remove) {
-            removeProduct(id);
-        }
     };
 
     const removeProduct = async (id: number) => {
-        try {
-            const response = await axios.delete(`http://localhost:3001/products/${id}`);
-            console.log(response);
-            setData(response.data);
+        if (remove) {
+            try {
+                const response = await axios.delete(`http://localhost:3001/products/${id}`);
+                console.log(response);
+                //setData(response.data);
+                //setConsult(true);
+                setRemove(false);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+                // setLoading(false);
+            }
             setConsult(true);
-            setRemove(false);
-            // setProducts(response.data);
-            // setLoading(false);
-        } catch (error) {
-            console.error('Error fetching products:', error);
-            // setLoading(false);
-            setConsult(false);
+            setIdDelete(0);
+            console.log('Eliminado');
         }
-        console.log('Eliminado');
     };
 
     const renderColumns = () => {
@@ -107,6 +114,16 @@ export default function StockProductos() {
         return data.map((product, index) => ({
             ...product,
             num: index + 1,
+            imageUrl: (
+                <div className="d-flex justify-content-center">
+                    <img
+                        src={product.imageUrl}
+                        alt={product.name}
+                        style={{ width: 50, height: 50 }}
+                    />
+                </div>
+            
+            ),
             actions: (
                 <div className="d-flex justify-content-around">
                     <IconButton
@@ -166,7 +183,6 @@ export default function StockProductos() {
                     <Table
                         data={mapperTable()}
                         height={400}
-                        autoHeight
                         wordWrap
                         rowKey="id"
                         bordered
