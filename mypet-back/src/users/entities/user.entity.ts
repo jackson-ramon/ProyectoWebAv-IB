@@ -16,6 +16,9 @@ export class UserEntity {
     @Column({nullable: false})
     password: string;
 
+    @Column({nullable: false})
+    favoriteMovie: string;
+
     @OneToMany(() => ProductEntity, product => product.user)
     products: ProductEntity[];
 

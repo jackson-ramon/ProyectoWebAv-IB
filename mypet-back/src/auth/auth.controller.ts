@@ -13,7 +13,6 @@ export class AuthController {
 
   @Post('register')
   register(@Body() registerDto: RegisterDto) {
-    console.log("Register");
     return this.authService.register(registerDto);
   }   
 
@@ -30,15 +29,16 @@ export class AuthController {
     return req.user;
   }
 
-  @Post('forget-password')
-  async forgetPassword(@Body() email: string) {
-    return await this.authService.forgetPassword(email);
-  }
+  // @Post('forget-password')
+  // async forgetPassword(@Body() email: string) {
+  //   return await this.authService.forgetPassword(email);
+  // }
 
   @Post('reset-password')
   async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
-    const { email, newPassword } = resetPasswordDto;
-    await this.authService.resetPassword(email, newPassword);
+
+    const { email, newPassword, favoriteMovie } = resetPasswordDto;
+    await this.authService.resetPassword(email, newPassword, favoriteMovie);
     return { message: 'Password reset successful' };
   }
 }

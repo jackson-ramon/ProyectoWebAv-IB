@@ -12,4 +12,8 @@ export class ResetPasswordDto {
     @IsString()
     @IsNotEmpty()
     confirmPassword: string;
+
+    @IsString()
+    @IsNotEmpty()
+    favoriteMovie: string;
 }

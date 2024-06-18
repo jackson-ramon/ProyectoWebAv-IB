@@ -13,7 +13,6 @@ export class AuthService {
 
   async login({email, password}: LoginDto) {
     const user = await this.usersService.findOneByEmail(email);
-    console.log('userlogin', user);
     if (!user) {
       throw new BadRequestException('email or password is incorrect');
     }
@@ -33,7 +32,7 @@ export class AuthService {
     };
   }
 
-  async register({name, email, password, confirmPassword}: RegisterDto) {
+  async register({name, email, password, confirmPassword, favoriteMovie}: RegisterDto) {
     
     const user = await this.usersService.findOneByEmail(email);
 
@@ -48,7 +47,8 @@ export class AuthService {
     return await this.usersService.create({
       name, 
       email, 
-      password: await bcrypt.hash(password, 10)
+      password: await bcrypt.hash(password, 10),
+      favoriteMovie: await bcrypt.hash(favoriteMovie, 10)
     });
   }
 
@@ -60,7 +60,17 @@ export class AuthService {
     }
   }
 
-  async resetPassword(email: string, newPassword: string): Promise<void> {
+  async resetPassword(email: string, newPassword: string, favoriteMovie: string): Promise<void> {
+    const user = await this.usersService.findOneByEmail(email);
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+    const isValidMovie = await bcrypt.compare(favoriteMovie, user.favoriteMovie);
+    console.log('isValidMovie', isValidMovie);
+    if (!isValidMovie) {
+      throw new BadRequestException('Favorite movie is incorrect');
+    }
     await this.usersService.updatePassword(email, newPassword);
   }
+
 }

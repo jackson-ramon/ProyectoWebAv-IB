@@ -13,7 +13,7 @@ export default function RegisterPage () {
     startLoading()
     await authFetch({
       endpoint: 'auth/register',
-      redirectRoute: '/home',
+      redirectRoute: '/',
       formData,
     })
     finishLoading()
@@ -49,6 +49,12 @@ export default function RegisterPage () {
               label='Contraseña'
               name='confirmPassword'
               type='password'
+            />
+            <Form.Input
+              placeholder='¿Cuál es tu película favorita?'
+              label='Pregunta de seguridad'
+              name='favoriteMovie'
+              type='text'
             />
           </div>
           <Form.SubmitButton 

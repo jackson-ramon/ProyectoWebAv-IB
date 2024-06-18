@@ -24,23 +24,16 @@ export class ProductsController {
     @Body() createProductDto: CreateProductDto,
     @UploadedFile() image?: Express.Multer.File,
   ) {
-
-    console.log("BODY", createProductDto);
-
-
     let decoded = null;
     try {
       decoded = jwt.verify(userToken, process.env.JWT_SECRET);
     } catch (error) {
-      console.error('Token verification failed:', error);
       throw new Error('Invalid token');
     }
     
     const id = decoded['id'];
     const user = await this.usersService.findOneById(id);
 
-    console.log('ProductsController - User:', user.id);
-    this.logger.debug(`User ID: ${user.id}`);
     const { name, price: productPrice } = createProductDto;
     const numberPrice = Number(productPrice);
     return await this.productsService.createProduct(user, name, numberPrice, image);

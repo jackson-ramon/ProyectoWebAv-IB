@@ -15,5 +15,10 @@ export class CreateUserDto {
     @IsString()
     @MinLength(1)
     name?: string;
+
+    @Transform(({ value }) => value.trim())
+    @IsString()
+    @MinLength(1)
+    favoriteMovie?: string;
 }
   

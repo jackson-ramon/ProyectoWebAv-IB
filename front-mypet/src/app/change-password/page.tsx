@@ -6,7 +6,7 @@ import { useLoading } from '@/hooks/useLoading'
 import { AxiosRequestConfig } from 'axios'
 import { useSearchParams } from 'next/navigation'
 
-export default function ChangePasswordPage () {
+export default function ChangePasswordPage() {
   const { finishLoading, isLoading, startLoading } = useLoading()
   const searchParams = useSearchParams()
   const authFetch = useAuthFetch()
@@ -41,10 +41,15 @@ export default function ChangePasswordPage () {
           onSubmit={changePassword}
         >
           <div className='my-[10px] flex flex-col gap-4'>
-          <Form.Input
+            <Form.Input
               placeholder='Ingresa tu correo...'
               label='Correo'
               name='email'
+              type='text'
+            /><Form.Input
+              placeholder='¿Cuál es tu película favorita?'
+              label='Pregunta de seguridad'
+              name='favoriteMovie'
               type='text'
             />
             <Form.Input
