@@ -20,6 +20,14 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
+  @Get('check')
+  @UseGuards(AuthGuard)
+  check(
+    @Req() req
+  ) {
+    return req.user;
+  }
+
   @Post('reset-password')
   async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
     const { email, newPassword } = resetPasswordDto;
