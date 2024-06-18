@@ -6,6 +6,7 @@ import { bucket } from '../firebase-admin';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { UserEntity } from 'src/users/entities/user.entity';
+import { SearchProductdto } from './dto/search-product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -30,7 +31,7 @@ export class ProductsService {
       imageUrl: imageUrl,
       user: user,
     };
-  
+    console.log("ProductData: ", productData);
     await this.productsRepository.save(productData);
     return productData;
   }
@@ -66,5 +67,9 @@ export class ProductsService {
 
   async delete(id: number): Promise<void> {
     await this.productsRepository.softDelete(id);
+  }
+
+  async findOneByName(searchProductdto: SearchProductdto): Promise<ProductEntity[]> {
+    return await this.productsRepository.find({ where: { name: searchProductdto.name } });
   }
 }

@@ -5,7 +5,6 @@ import { JwtStrategy } from '../strategies/jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 
-
 @Module({
   imports: [
     UsersModule,

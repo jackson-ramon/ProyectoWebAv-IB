@@ -75,7 +75,7 @@ export default function HomePage () {
         >
           <Sidenav.Header>
             <div style={headerStyles}>
-              <span style={{ marginLeft: 12 }}>Bienvenido Jackson</span>
+              <span style={{ marginLeft: 12 }}>Bienvenido</span>
             </div>
           </Sidenav.Header>
           <Sidenav 

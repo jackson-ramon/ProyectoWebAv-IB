@@ -63,7 +63,8 @@ const CrearActualizar: React.FC<CrearActualizarProps> = ({ open, setOpen, actual
             setImageFile(file);
             const url = URL.createObjectURL(file);
             setPreviewUrl(url);
-
+            console.log("FILE: ", file);
+            console.log("URL: ", url);
         }
     };
 
@@ -92,13 +93,12 @@ const CrearActualizar: React.FC<CrearActualizarProps> = ({ open, setOpen, actual
             if (imageFile) {
               formData.append('image', imageFile);
             }
-
+            console.log("TOKEN: ", getCookie('auth_cookie'));
             const response = await axios.post('http://localhost:3001/products/create', formData, {
                 headers: {
                     Authorization: `Bearer ${getCookie('auth_cookie')}`
                 }
             });
-            console.log(response.data);
             setConsult(true);
 
             setFormValue({

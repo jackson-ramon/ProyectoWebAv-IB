@@ -7,7 +7,9 @@ import { ResetPasswordDto } from 'src/users/dto/reset-password.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+  ) {}
 
   @Post('register')
   register(@Body() registerDto: RegisterDto) {
@@ -26,6 +28,11 @@ export class AuthController {
     @Req() req
   ) {
     return req.user;
+  }
+
+  @Post('forget-password')
+  async forgetPassword(@Body() email: string) {
+    return await this.authService.forgetPassword(email);
   }
 
   @Post('reset-password')

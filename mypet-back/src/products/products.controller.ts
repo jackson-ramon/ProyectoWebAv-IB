@@ -7,6 +7,7 @@ import { Express } from 'express';
 import { UsersService } from 'src/users/users.service';
 import { GetUser } from 'src/decorators/get-user.decorator';
 import * as jwt from 'jsonwebtoken';
+import { SearchProductdto } from './dto/search-product.dto';
 
 
 
@@ -24,8 +25,10 @@ export class ProductsController {
     @UploadedFile() image?: Express.Multer.File,
   ) {
 
-    let decoded = null;
+    console.log("BODY", createProductDto);
 
+
+    let decoded = null;
     try {
       decoded = jwt.verify(userToken, process.env.JWT_SECRET);
     } catch (error) {
@@ -49,10 +52,10 @@ export class ProductsController {
     return await this.productsService.findAllById(user);
   }
 
-  // @Get(':id')
-  // async findOne(@Param('id') id: number) {
-  //   return await this.productsService.findOne(id);
-  // }
+  @Post('p')
+  async findOne(@Body() searchProductdto: SearchProductdto) {
+    return await this.productsService.findOneByName(searchProductdto);
+  }
 
   @Put(':id')
   @UsePipes(new ValidationPipe({ whitelist: true }))

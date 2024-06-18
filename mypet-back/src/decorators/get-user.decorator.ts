@@ -5,6 +5,7 @@ export const GetUser = createParamDecorator(
   (data, ctx: ExecutionContext): string | null => {
     function extractTokenFromHeader(request: Request): string | null {
       const [type = '', token = ''] = request.headers.authorization?.split(' ') ?? [];
+      console.log("TOKEN: ", token);
       return token;
     }
     return extractTokenFromHeader(ctx.switchToHttp().getRequest());
