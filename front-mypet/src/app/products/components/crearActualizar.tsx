@@ -163,7 +163,7 @@ const CrearActualizar: React.FC<CrearActualizarProps> = ({ open, setOpen, actual
     return (
         <Modal size="sm" open={showModal} onClose={close}>
             <Modal.Header>
-                <Modal.Title>Crear/Actualizar Producto</Modal.Title>
+                <Modal.Title>{actualizar ? "Actualizar" : "Crear" } Producto</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form

@@ -30,15 +30,17 @@ export default function StockProductos() {
     const [data, setData] = useState([] as Product[]);
     const [consult, setConsult] = useState(true);
     const [idDelete, setIdDelete] = useState(0);
+    const [loading, setLoading] = useState(false)
     
     const getProducts = async () => {
+        setLoading(true);
         try {
             const response = await axios.get(`http://localhost:3001/products/${getCookie('id_user')}`);
             console.log(response);
             setData(response.data);
             setConsult(false);
             // setProducts(response.data);
-            // setLoading(false);
+            setLoading(false);
         } catch (error) {
             console.error('Error fetching products:', error);
             // setLoading(false);
@@ -201,6 +203,7 @@ export default function StockProductos() {
                         rowKey="id"
                         bordered
                         cellBordered
+                        loading={loading}
                         className="mt-3"
                     >
                         {renderColumns()}

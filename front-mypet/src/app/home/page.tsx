@@ -83,20 +83,20 @@ export default function HomePage () {
       <Container>
         <Sidebar
           style={{ display: 'flex', flexDirection: 'column', border: "1px solid #4F979C" }}
-          width={expand ? 240 : 56}
+          width={expand ? 240 : 70}
           collapsible
         >
           <Sidenav.Header>
             <div style={headerStyles} className='align-middle'>
               <FontAwesomeIcon icon={faShieldDog} fontSize={30} />
-              {expand ? <span style={{ marginLeft: 12 }}>My Pet</span> : ""}
+              {expand ? <span style={{ marginLeft: 12 }} className='fw-bolder'>My Pet</span> : ""}
             </div>
           </Sidenav.Header>
           <Sidenav 
             expanded={expand} 
             defaultOpenKeys={['3']} 
             appearance="subtle" 
-            style={expand ? { height: "85vh" } : { height: "75vh" } }
+            style={expand ? { height: "85vh" } : { height: "78vh" } }
           >
             <Sidenav.Body>
               <Nav onSelect={(e) => handleSelect(e)}>
