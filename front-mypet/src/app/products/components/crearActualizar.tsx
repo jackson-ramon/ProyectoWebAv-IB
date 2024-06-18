@@ -63,8 +63,6 @@ const CrearActualizar: React.FC<CrearActualizarProps> = ({ open, setOpen, actual
             setImageFile(file);
             const url = URL.createObjectURL(file);
             setPreviewUrl(url);
-            console.log("FILE: ", file);
-            console.log("URL: ", url);
         }
     };
 
