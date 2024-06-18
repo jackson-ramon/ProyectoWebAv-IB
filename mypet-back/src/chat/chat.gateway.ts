@@ -8,10 +8,10 @@ import { Observable, from, map } from 'rxjs';
 @WebSocketGateway({
   cors: {
     origin: '*',
-  }
+  },
 })
-export class ChatGateway implements OnModuleInit{
-  constructor(private readonly chatService: ChatService) {}
+export class ChatGateway implements OnModuleInit {
+  constructor(private readonly chatService: ChatService) { }
 
   @WebSocketServer() server: Server;
 
@@ -21,13 +21,12 @@ export class ChatGateway implements OnModuleInit{
       socket.on('disconnect', () => {
         console.log('Client disconnected: ', socket.id);
       });
-    })
+    });
   }
-
 
   @SubscribeMessage('events')
   findAll(@MessageBody() data: any): Observable<WsResponse<number>> {
-    return from([1, 2, 3]).pipe(map(item => ({ event: 'events', data: item })));
+    return from([1, 2, 3]).pipe(map((item) => ({ event: 'events', data: item })));
   }
 
   @SubscribeMessage('identity')
@@ -35,12 +34,8 @@ export class ChatGateway implements OnModuleInit{
     return data;
   }
 
-  // @SubscribeMessage('event_message')
-  // handleIncommingMessage(
-  //   client: Socket,
-  //   payload: { message: string, username: string }
-  // ): void {
-  //   this.server.emit('event_message', payload);
-  // }
-
+  @SubscribeMessage('event_message')
+  handleIncommingMessage(client: any, payload: { message: string; username: string }): void {
+    this.server.emit('event_message', payload);
+  }
 }

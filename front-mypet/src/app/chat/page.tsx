@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import useSocket from '@/hooks/useSockets';
+import React, { useState, useEffect } from 'react';
 import { Input, Button } from 'rsuite';
 
 interface Message {
@@ -10,9 +11,39 @@ interface Message {
 const ChatPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
+  const socket = useSocket('http://localhost:3001'); // Asegúrate de que la URL sea correcta
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('connect', () => {
+        console.log('Connected to WebSocket server');
+      });
+
+      socket.on('disconnect', () => {
+        console.log('Disconnected from WebSocket server');
+      });
+
+      socket.on('event_message', (payload: { message: string; username: string }) => {
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { id: Date.now(), text: payload.message, sender: 'them' },
+        ]);
+      });
+    }
+
+    return () => {
+      if (socket) {
+        socket.off('connect');
+        socket.off('disconnect');
+        socket.off('event_message');
+      }
+    };
+  }, [socket]);
 
   const handleSend = () => {
-    if (newMessage.trim() !== '') {
+    if (newMessage.trim() !== '' && socket) {
+      const message = { message: newMessage, username: 'me' };
+      socket.emit('event_message', message);
       setMessages([...messages, { id: Date.now(), text: newMessage, sender: 'me' }]);
       setNewMessage('');
     }
@@ -24,9 +55,8 @@ const ChatPage: React.FC = () => {
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`mb-2 p-2 rounded-md max-w-xs ${
-              message.sender === 'me' ? 'bg-green-200 ml-auto' : 'bg-gray-200 mr-auto'
-            }`}
+            className={`mb-2 p-2 rounded-md max-w-xs ${message.sender === 'me' ? 'bg-green-200 ml-auto' : 'bg-gray-200 mr-auto'
+              }`}
           >
             {message.text}
           </div>
