@@ -1,3 +1,4 @@
+import axios from 'axios'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
@@ -9,13 +10,13 @@ export async function middleware (request: NextRequest) {
       return NextResponse.redirect(new URL('/', request.url))
     }
 
-    const res = await fetch('http://localhost:3001/auth/check', {
+    const resp = await axios.get('http://localhost:3001/auth/check', {
       headers: {
-        token: token.value
+        Authorization: `Bearer ${token.value}`
       }
     })
 
-    const data = await res.json()
+    const data = await resp.data;
 
     // @ts-ignore
     if (!data.isAuthorized) {

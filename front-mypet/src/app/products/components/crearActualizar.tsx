@@ -3,6 +3,7 @@
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import { Modal, Form, Button, Schema, Grid, Col, Row } from 'rsuite';
 import axios from 'axios';
+import { getCookie } from './constants';
 
 interface CrearActualizarProps {
     open: boolean;
@@ -10,6 +11,7 @@ interface CrearActualizarProps {
     actualizar?: boolean;
     setActualizar?: (actualizar: boolean) => void;
     dataActual?: any;
+    setConsult?: (consult: boolean) => void;
 };
 
 const { StringType, NumberType } = Schema.Types;
@@ -35,7 +37,7 @@ const TextField = forwardRef((props: TextFieldProps, ref: React.Ref<HTMLDivEleme
     );
 });
 
-const CrearActualizar: React.FC<CrearActualizarProps> = ({ open, setOpen, actualizar, setActualizar, dataActual }) => {
+const CrearActualizar: React.FC<CrearActualizarProps> = ({ open, setOpen, actualizar, setActualizar, dataActual, setConsult }) => {
     const [showModal, setShowModal] = useState(open);
     const formRef = useRef(null);
     const [formError, setFormError] = useState({});
@@ -61,6 +63,7 @@ const CrearActualizar: React.FC<CrearActualizarProps> = ({ open, setOpen, actual
             setImageFile(file);
             const url = URL.createObjectURL(file);
             setPreviewUrl(url);
+
         }
     };
 
@@ -74,7 +77,7 @@ const CrearActualizar: React.FC<CrearActualizarProps> = ({ open, setOpen, actual
         setActualizar(false);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!formRef.current.check()) {
             // console.error('Form Error');
             return;
@@ -82,27 +85,32 @@ const CrearActualizar: React.FC<CrearActualizarProps> = ({ open, setOpen, actual
         console.log(formValue, 'Form Value');
         console.log(imageFile, 'Image File');
 
-        // try {
-        //     const formData = new FormData();
-        //     formData.append('name', formValue.name);
-        //     formData.append('price', formValue.price);
-        //     if (imageFile) {
-        //       formData.append('image', imageFile);
-        //     }
+        try {
+            const formData = new FormData();
+            formData.append('name', formValue.name);
+            formData.append('price', formValue.price);
+            if (imageFile) {
+              formData.append('image', imageFile);
+            }
 
-        //     const response = await axios.post('/api/products', formData);
-        //     console.log(response.data);
+            const response = await axios.post('http://localhost:3001/products/create', formData, {
+                headers: {
+                    Authorization: `Bearer ${getCookie('auth_cookie')}`
+                }
+            });
+            console.log(response.data);
+            setConsult(true);
 
-        //     setFormValue({
-        //         name: '',
-        //         price: '',
-        //     });
-        //     setImageFile(null);
-        //     setPreviewUrl(null);
-        //     close();
-        // } catch (error) {
-        //     console.error(error);
-        // }
+            setFormValue({
+                name: '',
+                price: '',
+            });
+            setImageFile(null);
+            setPreviewUrl(null);
+            close();
+        } catch (error) {
+            console.error(error);
+        }
 
     };
 
@@ -142,7 +150,7 @@ const CrearActualizar: React.FC<CrearActualizarProps> = ({ open, setOpen, actual
                                         <div className="flex flex-col items-center">
                                             {previewUrl ? (
                                                 <img
-                                                    src={previewUrl}
+                                                    src={actualizar ? dataActual.imageUrl : previewUrl}
                                                     alt="Preview"
                                                     className="w-12 h-34 object-cover rounded mb-2"
                                                 />

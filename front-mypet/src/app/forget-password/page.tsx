@@ -21,7 +21,7 @@ export default function ForgetPage () {
     <>
       <div className='min-h-screen flex flex-col items-center justify-center'>
         <Form
-          title='Recueperar contraseña'
+          title='Recuperar contraseña'
           onSubmit={forgetPassword}
           description='Formulario para recueperar tu contraseña'
         >

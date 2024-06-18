@@ -6,15 +6,9 @@ import EditIcon from '@rsuite/icons/Edit';
 import SearchIcon from '@rsuite/icons/Search';
 import PlusIcon from '@rsuite/icons/Plus';
 import CrearActualizar from "./components/crearActualizar";
-import { columnsProduct } from "./components/constants";
+import { columnsProduct, getCookie } from "./components/constants";
 import axios from "axios";
 import ConfirmationModal from "./components/confirmation";
-
-const data = [
-    { id: 1, name: "Product 1", price: 8.40, image: "https://via.placeholder.com/150" },
-    { id: 2, name: "Product 2", price: 4.20, image: "https://via.placeholder.com/150" },
-    { id: 3, name: "Product 3", price: 6.30, image: "https://via.placeholder.com/150" },
-];
 
 interface Product {
     id: number;
@@ -32,22 +26,29 @@ export default function StockProductos() {
     const [api, setApi] = useState(false);
     const [remove, setRemove] = useState(false);
     const [confirmation, setConfirmation] = useState(false);
+    const [data, setData] = useState([] as Product[]);
+    const [consult, setConsult] = useState(true);
+    
+    const getProducts = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3001/products/${getCookie('id_user')}`);
+            console.log(response);
+            setData(response.data);
+            setConsult(false);
+            // setProducts(response.data);
+            // setLoading(false);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+            // setLoading(false);
+            setConsult(false);
+        }
+    }
 
-    // useEffect(() => {
-    //     if (api) {
-    //         axios.get('https://pokeapi.co/api/v2/pokemon/ditto')
-    //             .then(response => {
-    //                 console.log(response);
-    //                 // setProducts(response.data);
-    //                 // setLoading(false);
-    //             })
-    //             .catch(error => {
-    //                 console.error('Error fetching products:', error);
-    //                 // setLoading(false);
-    //             });
-    //         setApi(false);
-    //     }
-    // }, [api]);
+    useEffect(() => {
+        if (consult) {
+            getProducts();
+        }
+    }, [consult]);
 
     const handleInput = (value: string) => {
         setSearchKeyword(value);
@@ -72,13 +73,25 @@ export default function StockProductos() {
     const handleDelete = (id: number) => {
         setConfirmation(true);
         if (remove) {
-            removeProduct();
+            removeProduct(id);
         }
     };
 
-    const removeProduct = () => {
+    const removeProduct = async (id: number) => {
+        try {
+            const response = await axios.delete(`http://localhost:3001/products/${id}`);
+            console.log(response);
+            setData(response.data);
+            setConsult(true);
+            setRemove(false);
+            // setProducts(response.data);
+            // setLoading(false);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+            // setLoading(false);
+            setConsult(false);
+        }
         console.log('Eliminado');
-        setRemove(false);
     };
 
     const renderColumns = () => {
@@ -171,7 +184,8 @@ export default function StockProductos() {
                     setOpen={setOpenModal} 
                     actualizar={actualizar}
                     setActualizar={setActualizar}
-                    dataActual={dataActualizar} 
+                    dataActual={dataActualizar}
+                    setConsult={setConsult}
                 />
             }
 
