@@ -32,12 +32,16 @@ export class AuthService {
     };
   }
 
-  async register({name, email, password}: RegisterDto) {
+  async register({name, email, password, confirmPassword}: RegisterDto) {
     
     const user = await this.usersService.findOneByEmail(email);
 
     if (user) {
       throw new BadRequestException('User already exists');
+    }
+
+    if (password !== confirmPassword) {
+      throw new BadRequestException('Confirm password does not match');
     }
 
     return await this.usersService.create({
