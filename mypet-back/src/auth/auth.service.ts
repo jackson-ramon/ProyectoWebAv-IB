@@ -13,6 +13,7 @@ export class AuthService {
 
   async login({email, password}: LoginDto) {
     const user = await this.usersService.findOneByEmail(email);
+    console.log('userlogin', user);
     if (!user) {
       throw new BadRequestException('email or password is incorrect');
     }
@@ -49,6 +50,14 @@ export class AuthService {
       email, 
       password: await bcrypt.hash(password, 10)
     });
+  }
+
+  async forgetPassword(email: string) {
+    const user = await this.usersService.findOneByEmail(email);
+    console.log('userForgot', user);
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
   }
 
   async resetPassword(email: string, newPassword: string): Promise<void> {

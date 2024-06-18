@@ -10,9 +10,11 @@ export default function ForgetPage () {
 
   const forgetPassword = async (formData: any) => {
     startLoading()
+    console.log('fomrData', formData)
     await authFetch({
-      endpoint: 'forget-password',
+      endpoint: 'auth/forget-password',
       formData,
+      redirectRoute: '/change-password',
     })
     finishLoading()
   }
@@ -23,7 +25,7 @@ export default function ForgetPage () {
         <Form
           title='Recuperar contraseña'
           onSubmit={forgetPassword}
-          description='Formulario para recueperar tu contraseña'
+          description='Formulario para recuperar tu contraseña'
         >
           <div className='my-[10px] flex flex-col gap-4'>
             <Form.Input

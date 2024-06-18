@@ -23,7 +23,7 @@ export default function ChangePasswordPage () {
     }
 
     await authFetch({
-      endpoint: 'change-password',
+      endpoint: 'auth/reset-password',
       redirectRoute: '/',
       formData,
       options
@@ -41,6 +41,12 @@ export default function ChangePasswordPage () {
           onSubmit={changePassword}
         >
           <div className='my-[10px] flex flex-col gap-4'>
+          <Form.Input
+              placeholder='Ingresa tu correo...'
+              label='Correo'
+              name='email'
+              type='text'
+            />
             <Form.Input
               placeholder='Ingresa tu nueva contraseña...'
               label='Contraseña'

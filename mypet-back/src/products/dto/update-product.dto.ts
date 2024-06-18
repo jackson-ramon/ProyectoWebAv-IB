@@ -5,8 +5,6 @@ export class UpdateProductDto {
     @IsOptional()
     name: string;
 
-    @IsNumber()
-    @IsPositive()
     @IsOptional()
     price: number;
     

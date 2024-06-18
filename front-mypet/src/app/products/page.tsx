@@ -9,12 +9,13 @@ import CrearActualizar from "./components/crearActualizar";
 import { columnsProduct, getCookie } from "./components/constants";
 import axios from "axios";
 import ConfirmationModal from "./components/confirmation";
+import { get } from "http";
 
 interface Product {
     id: number;
     name: string;
     price: number;
-    image: string;
+    imageUrl: string;
 }
 
 // export default function StockProductos({ data: {} }) {
@@ -53,11 +54,24 @@ export default function StockProductos() {
 
     const handleInput = (value: string) => {
         setSearchKeyword(value);
+        if (value.trim() === '') {
+            getProducts();
+        }
     };
 
-    const handleSearch = () => {
-        console.log(searchKeyword);
-        setApi(true);
+    const handleSearch = async () => {
+        try {
+            const response = await axios.post(`http://localhost:3001/products/p`, { name: searchKeyword });
+            console.log(response);
+            setData(response.data);
+            setConsult(false);
+            // setProducts(response.data);
+            // setLoading(false);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+            // setLoading(false);
+            setConsult(false);
+        }
     };
 
     const handleCreate = () => {
@@ -111,15 +125,14 @@ export default function StockProductos() {
     };
 
     const mapperTable = () => {
-        return data.map((product, index) => ({
+        return data.map((product) => ({
             ...product,
-            num: index + 1,
             imageUrl: (
                 <div className="d-flex justify-content-center">
                     <img
                         src={product.imageUrl}
                         alt={product.name}
-                        style={{ width: 50, height: 50 }}
+                        style={{ width: 100, height: 100 }}
                     />
                 </div>
             
