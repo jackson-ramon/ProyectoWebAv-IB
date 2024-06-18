@@ -11,7 +11,7 @@ interface Message {
 const ChatPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
-  const socket = useSocket('http://localhost:3001'); // Asegúrate de que la URL sea correcta
+  const socket = useSocket('http://localhost:3001');
 
   useEffect(() => {
     if (socket) {
@@ -26,7 +26,7 @@ const ChatPage: React.FC = () => {
       socket.on('event_message', (payload: { message: string; username: string }) => {
         setMessages((prevMessages) => [
           ...prevMessages,
-          { id: Date.now(), text: payload.message, sender: 'them' },
+          { id: Date.now(), text: payload.message, sender: 'me' },
         ]);
       });
     }
@@ -42,9 +42,9 @@ const ChatPage: React.FC = () => {
 
   const handleSend = () => {
     if (newMessage.trim() !== '' && socket) {
-      const message = { message: newMessage, username: 'me' };
+      const message = { message: newMessage, username: 'them' };
       socket.emit('event_message', message);
-      setMessages([...messages, { id: Date.now(), text: newMessage, sender: 'me' }]);
+      // setMessages([...messages, { id: Date.now(), text: newMessage, sender: 'them' }]);
       setNewMessage('');
     }
   };
@@ -55,8 +55,7 @@ const ChatPage: React.FC = () => {
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`mb-2 p-2 rounded-md max-w-xs ${message.sender === 'me' ? 'bg-green-200 ml-auto' : 'bg-gray-200 mr-auto'
-              }`}
+            className={`mb-2 p-2 rounded-md max-w-xs ${message.sender === 'me' ? 'bg-gray-200 ml-auto' : 'bg-green-200 mr-auto'}`}
           >
             {message.text}
           </div>
