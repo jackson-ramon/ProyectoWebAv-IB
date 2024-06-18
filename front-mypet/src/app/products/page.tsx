@@ -125,8 +125,9 @@ export default function StockProductos() {
     };
 
     const mapperTable = () => {
-        return data.map((product) => ({
+        return data.map((product, index) => ({
             ...product,
+            num: index + 1,
             imageUrl: (
                 <div className="d-flex justify-content-center">
                     <img

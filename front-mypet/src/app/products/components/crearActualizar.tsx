@@ -130,7 +130,16 @@ const CrearActualizar: React.FC<CrearActualizarProps> = ({ open, setOpen, actual
               formData.append('image', imageFile);
             }
 
-            const response = await axios.put(`http://localhost:3001/products/${dataActual.id}`, formData, {
+            let params: Partial<typeof dataActual> = {
+                name: formValue.name,
+                price: formValue.price,
+                imageUrl: dataActual.imageUrl,
+            };
+
+            console.log("DATA",dataActual)
+            console.log("Valores finales",params)
+
+            const response = await axios.put(`http://localhost:3001/products/${dataActual.id}`, params, {
                 headers: {
                     Authorization: `Bearer ${getCookie('auth_cookie')}`
                 }

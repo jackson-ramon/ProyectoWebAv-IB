@@ -7,7 +7,8 @@ import {
   Sidenav, 
   Content, 
   Navbar, 
-  Nav 
+  Nav, 
+  Button
 } from 'rsuite';
 import CogIcon from '@rsuite/icons/legacy/Cog';
 import AngleLeftIcon from '@rsuite/icons/legacy/AngleLeft';
@@ -15,6 +16,7 @@ import AngleRightIcon from '@rsuite/icons/legacy/AngleRight';
 import DashboardIcon from '@rsuite/icons/Dashboard';
 import GroupIcon from '@rsuite/icons/legacy/Group';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import 'rsuite/dist/rsuite.min.css';
 import { Panel } from 'rsuite';
@@ -33,7 +35,8 @@ const headerStyles = {
   overflow: 'hidden'
 };
 
-const NavToggle = ({ expand, onChange }: { expand: boolean, onChange: () => void }) => {
+const NavToggle = ({ expand, onChange, handleLogout }: { expand: boolean, onChange: () => void, handleLogout: () => void }) => {
+  
   return (
     <Navbar appearance="subtle" className="nav-toggle">
       <Nav>
@@ -43,9 +46,11 @@ const NavToggle = ({ expand, onChange }: { expand: boolean, onChange: () => void
           trigger="click"
           title={<CogIcon style={{ width: 20, height: 20 }} />}
         >
-          <Nav.Item>Help</Nav.Item>
-          <Nav.Item>Settings</Nav.Item>
-          <Nav.Item>Sign out</Nav.Item>
+          <Nav.Item>
+            <Button onClick={handleLogout}>
+              Sign out
+            </Button>
+          </Nav.Item>
         </Nav.Menu>
       </Nav>
 
@@ -58,13 +63,19 @@ const NavToggle = ({ expand, onChange }: { expand: boolean, onChange: () => void
   );
 };
 
-// TODO: Usar el archivo middleware para ingresar a esta página
 export default function HomePage () {
   const [expand, setExpand] = useState(true);
   const [openTab, setOpenTab] = useState("1");
+  const router = useRouter();
 
   const handleSelect = (eventKey: string) => {
     setOpenTab(eventKey);
+  };
+
+  const handleLogout = () => {
+    document.cookie = "auth_cookie=; Max-Age=-99999999;";
+    document.cookie = "id_user=; Max-Age=-99999999;";
+    router.push('/');
   };
 
   return (
@@ -95,23 +106,10 @@ export default function HomePage () {
                 <Nav.Item eventKey="2" icon={<GroupIcon />}>
                   Chat de emprendedores
                 </Nav.Item>
-                {/* <Nav.Menu
-                  eventKey="3"
-                  trigger="hover"
-                  title="Advanced"
-                  icon={<MagicIcon />}
-                  placement="rightStart"
-                >
-                  <Nav.Item eventKey="3-1">Geo</Nav.Item>
-                  <Nav.Item eventKey="3-2">Devices</Nav.Item>
-                  <Nav.Item eventKey="3-3">Brand</Nav.Item>
-                  <Nav.Item eventKey="3-4">Loyalty</Nav.Item>
-                  <Nav.Item eventKey="3-5">Visit Depth</Nav.Item>
-                </Nav.Menu> */}
               </Nav>
             </Sidenav.Body>
           </Sidenav>
-          <NavToggle expand={expand} onChange={() => setExpand(!expand)} />
+          <NavToggle expand={expand} onChange={() => setExpand(!expand)} handleLogout={handleLogout} />
         </Sidebar>
 
         <Panel bordered className='m-4 w-100' style={{ border: "1px solid #4F979C" }}>
