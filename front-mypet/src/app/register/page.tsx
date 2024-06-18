@@ -9,9 +9,10 @@ export default function RegisterPage () {
   const authFetch = useAuthFetch()
 
   const register = async (formData: any) => {
+    console.log(formData)
     startLoading()
     await authFetch({
-      endpoint: 'register',
+      endpoint: 'auth/register',
       redirectRoute: '/home',
       formData,
     })
@@ -27,6 +28,11 @@ export default function RegisterPage () {
           description='Formulario para crear una cuenta'
         >
           <div className='my-[10px] flex flex-col gap-4'>
+            <Form.Input
+              label='Nombre'
+              name='name'
+              placeholder='Ingresa tu nombre...'
+            />
             <Form.Input
               label='Correo'
               name='email'

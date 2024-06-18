@@ -69,7 +69,7 @@ export default function HomePage () {
     <div className="sidebar-page">
       <Container>
         <Sidebar
-          style={{ display: 'flex', flexDirection: 'column' }}
+          style={{ display: 'flex', flexDirection: 'column', border: "1px solid #4F979C" }}
           width={expand ? 240 : 56}
           collapsible
         >
@@ -82,7 +82,7 @@ export default function HomePage () {
             expanded={expand} 
             defaultOpenKeys={['3']} 
             appearance="subtle" 
-            style={expand ? { height: "80vh" } : { height: "70vh" } }
+            style={expand ? { height: "85vh" } : { height: "75vh" } }
           >
             <Sidenav.Body>
               <Nav onSelect={(e) => handleSelect(e)}>

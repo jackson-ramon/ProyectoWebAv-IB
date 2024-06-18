@@ -12,25 +12,25 @@ export default function LoginPage () {
   const [open, setOpen] = useState(false);
 
   // TODO: Probar el llamado a la API
-  // const login = async (formData: any) => {
-  //   startLoading()
-  //   await authFetch({
-  //     endpoint: 'login',
-  //     redirectRoute: '/home',
-  //     formData,
-  //   })
-  //   finishLoading()
-  // }
-
-  const login = (formData: any) => {
+  const login = async (formData: any) => {
     startLoading()
-    if (formData.email === 'jackson' && formData.password === '1234') {
-      // console.log('Iniciando sesión')
-    } else {
-      console.log('No se pudo iniciar sesión')
-    }
-    finishLoading();
+    await authFetch({
+      endpoint: 'auth/login',
+      redirectRoute: '/home',
+      formData,
+    })
+    finishLoading()
   }
+
+  // const login = (formData: any) => {
+  //   startLoading()
+  //   if (formData.email === 'jackson' && formData.password === '1234') {
+  //     // console.log('Iniciando sesión')
+  //   } else {
+  //     console.log('No se pudo iniciar sesión')
+  //   }
+  //   finishLoading();
+  // }
 
   return (
     <>
