@@ -46,7 +46,7 @@ export default function RegisterPage () {
             />
             <Form.Input
               placeholder='Confirma tu contraseña...'
-              label='Contraseña'
+              label='Confirma tu Contraseña'
               name='confirmPassword'
               type='password'
             />
